@@ -2,11 +2,12 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
+require('dotenv').config()
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const port = 3000;
+const port = process.env.PORT;
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -25,8 +26,9 @@ io.on("connection", (socket) => {
         io.emit("receive-username", {id: socket.id, username: data})
     })
 });
+
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index.ejs");
 });
 
 server.listen(port, () => {
